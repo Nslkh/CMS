@@ -1,4 +1,16 @@
+<?php 
+require_once ("includes/DB.php");
+require_once ("includes/Functions.php");
+require_once ("includes/Sessions.php");
+if(isset($_POST["Submit"])) {
+	$Category = $_POST["CategoryTitle"];
 
+	if(empty($Category)) {
+		$_SESSION["ErrorMsg"] = "All fields must be filled out";
+		Redirect_to("Categories.php");
+	}
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -74,6 +86,8 @@
 	<section class="container py-2 mb-4">
 		<div class="row">
 			<div class="offset-lg-1 col-lg-10" style="min-height: 400px;">
+				<?php echo ErrorMsg();
+				echo SuccessMsg(); ?>
 				<form class="" action="Categories.php" method="post">
 					 <div class="card bg-secondary text-light mb-3">
 					 	<div class="card-header">
@@ -82,14 +96,14 @@
 					 		<div class="card-body bg-dark">
 					 			<div class="form-group">
 					 				<label for="title"	><span class="FieldInfo">Categoty Title:</span></label>
-					 				<input class="form-control" type="text" name="Title" id="title" placeholder="Type title here" value="">
+					 				<input class="form-control" type="text" name="CategoryTitle" id="title" placeholder="Type title here" value="">
 					 			</div>
 					 			<div class="row">
 					 				<div class="col-lg-6 mb-2">
 					 					<a href="Dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-arrow-left"></i>Back to Dashboard </a>
 					 				</div>
 					 				<div class="col-lg-6 mb-2">
-					 				<button type="button" name="Submit" class="btn btn-success btn-block"><i class="fas fa-check"></i>Publish</button>
+					 				<button type="Submit" name="Submit" class="btn btn-success btn-block"><i class="fas fa-check"></i>Publish</button>
 					 				</div>
 					 			</div>
 					 		</div>
