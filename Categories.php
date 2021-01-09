@@ -8,6 +8,11 @@ if(isset($_POST["Submit"])) {
 	if(empty($Category)) {
 		$_SESSION["ErrorMsg"] = "All fields must be filled out";
 		Redirect_to("Categories.php");
+	}elseif(strlen($Category)<3) {
+		$_SESSION["ErrorMsg"] = "Category title should be greater than 2 characters";
+	}
+	elseif(strlen($Category)>244) {
+		$_SESSION["ErrorMsg"] = "Category title should be less than 244 characters";
 	}
 }
 ?>
