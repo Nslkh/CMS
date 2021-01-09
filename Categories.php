@@ -86,7 +86,7 @@
 					 			</div>
 					 			<div class="row">
 					 				<div class="col-lg-6 mb-2">
-					 					<a href="Dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-arrow-left"></i>Back to Dashboard</a>
+					 					<a href="Dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-arrow-left"></i>Back to Dashboard </a>
 					 				</div>
 					 				<div class="col-lg-6 mb-2">
 					 				<button type="button" name="Submit" class="btn btn-success btn-block"><i class="fas fa-check"></i>Publish</button>
