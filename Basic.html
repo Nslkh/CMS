@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie-edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+	<!-- NAVBAR -->
+	<div style="height:10px; background:#27aae1;"></div>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container">
+			<a href="#" class="navbar-brand">EduTheDevs</a>
+			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS" >
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarcollapseCMS">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a href="MyProfile.php" class="nav-link">My Profile</a>
+				</li>
+
+				<li class="nav-item">
+					<a href="Dashboard.php" class="nav-link">Dashboard</a>
+				</li>
+
+				<li class="nav-item">
+					<a href="Posts.php" class="nav-link">Post</a>
+				</li>
+
+				<li class="nav-item">
+					<a href="Categories.php" class="nav-link">Categories</a>
+				</li>
+
+				<li class="nav-item">
+					<a href="Admins.php" class="nav-link">Manage Admin</a>
+				</li>
+
+				<li class="nav-item">
+					<a href="Comments.php" class="nav-link">Comments</a>
+				</li>
+				<li class="nav-item">
+					<a href="Blog.php?page=1" class="nav-link">Live Blog</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"  ><a href="logout.php" class="nav-link">Logout</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+	<div style="height:10px; background:#27aae1;"></div>
+	<!-- NAVBAR END -->
+
+	<!-- HEADER -->
+	<header class="bg-dark text-white  py-3" >
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+				<h1>Some</h1>
+				</div>
+			</div>
+		</div>
+	</header>
+	<br>
+	<!-- HEADER END -->
+
+	<!-- FOOTER -->
+	<footer class="bg-dark text-white">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+				<p class="lead text-center">Made By | Narzullo Slkh | <span id="year"></span> &copy; All right reserved </p>
+			</div>
+		</div>
+		</div>
+	</footer>
+	<!-- FOOTER END -->
+	<!-- jQuery and Bootstrap Bundle (includes Popper) -->
+	<script src="js/jquery-3.5.1.slim.min.js"></script>
+	<script src="js/bootstrap.bundle.min.js" ></script>
+	<script>
+		$('#year').text(new Date().getFullYear());
+	</script>
+
+</body>
+</html>
