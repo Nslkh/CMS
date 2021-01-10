@@ -4,6 +4,11 @@ require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
 if(isset($_POST["Submit"])) {
 	$Category = $_POST["CategoryTitle"];
+	$Admin = "Narzullo";
+	date_default_timezone_set("Asia/Tashkent");
+	$CurrentTime = time();
+	
+	$DateTime = strftime("%B-%d-%Y %H:%M:%S", $CurrentTime); 
 
 	if(empty($Category)) {
 		$_SESSION["ErrorMsg"] = "All fields must be filled out";
@@ -13,8 +18,25 @@ if(isset($_POST["Submit"])) {
 	}
 	elseif(strlen($Category)>244) {
 		$_SESSION["ErrorMsg"] = "Category title should be less than 244 characters";
+	}else{
+		//Query to insert category in DB when all is fine
+		$sql = "INSERT INTO category(title,author,datetime)";
+		$sql .="VALUES(:categoryName,:adminName,:dateTime)";
+		$stmt = $ConnectingDB->prepare($sql);
+		$stmt->bindValue(':categoryName',$Category);
+		$stmt->bindValue(':adminName',$Admin);
+		$stmt->bindValue('dateTime',$DateTime);
+		$Execute=$stmt->execute();
+
+		if($Execute){
+			$_SESSION["SuccessMsg"] = "Category  with id : ".$ConnectingDB->lastInsertId()."  Added Successfully";
+			Redirect_to("Categories.php");
+		}else{
+			$_SESSION['ErrorMsg'] = "Something went wrong. Try again !";
+			Redirect_to("Categories.php");
+		}
 	}
-}
+} //Ending of submit Button If-Condition
 ?>
 
 <!DOCTYPE html>
