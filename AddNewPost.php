@@ -126,13 +126,19 @@ if(isset($_POST["Submit"])) {
 					 			<div class="form-group">
 					 				<label for="title"	><span class="FieldInfo">Chose Category </span></label>
 					 				<select class="form-control" name="Category" id="CategoryTitle">
-					 					<option value="">1</option>
-					 					<option value="">2</option>
-					 					<option value="">3</option>
-					 					<option value="">4</option>
+					 					<!-- Fetching all the categoties from category table -->
+					 					<?php global $ConnectingDB;
+					 					$sql = "SELECT id, title FROM category";
+					 					$stmt = $ConnectingDB->query($sql);
+					 					while($DateRows = $stmt->fetch()) {
+					 						$Id = $DateRows['id'];
+					 						$CategoryName = $DateRows['title'];
+					 					?>
+					 					<option><?php echo $CategoryName;  ?></option>
+					 					<?php } ?>
 					 				</select>
 					 			</div>
-					 			<div class="form-group mb-3">
+					 			<div class="form-group mb-1">
 					 				<div class="custom-file">
 					 				<input class="custom-file-input" type="File" name="Image" id="imageSelect" value="">
 					 				<label for="imageSelect" class="custom-file-label">Select Image</label>
