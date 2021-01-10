@@ -20,6 +20,7 @@ if(isset($_POST["Submit"])) {
 		$_SESSION["ErrorMsg"] = "Category title should be less than 244 characters";
 	}else{
 		//Query to insert category in DB when all is fine
+		global $ConnectingDB;
 		$sql = "INSERT INTO category(title,author,datetime)";
 		$sql .="VALUES(:categoryName,:adminName,:dateTime)";
 		$stmt = $ConnectingDB->prepare($sql);
@@ -103,7 +104,7 @@ if(isset($_POST["Submit"])) {
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-				<h1> <i class="fas fa-edit" style="color: #27aae1;"></i>Manage Categories</h1>
+				<h1> <i class="fas fa-edit" style="color: #27aae1;"></i>Manage the Categories</h1>
 				</div>
 			</div>
 		</div>
