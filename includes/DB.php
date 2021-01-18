@@ -1,4 +1,4 @@
 <?php 
-$DSN='mysql:host = localhost; dbname=cms1';
+$DSN='mysql:host = localhost; dbname=cms';
 $ConnectingDB = new PDO($DSN,'root','');
 ?>

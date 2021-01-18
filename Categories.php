@@ -1,4 +1,4 @@
-<?php 
+ <?php 
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
@@ -15,9 +15,13 @@ if(isset($_POST["Submit"])) {
 		Redirect_to("Categories.php");
 	}elseif(strlen($Category)<3) {
 		$_SESSION["ErrorMsg"] = "Category title should be greater than 2 characters";
+			Redirect_to("Categories.php");
+
 	}
-	elseif(strlen($Category)>244) {
-		$_SESSION["ErrorMsg"] = "Category title should be less than 244 characters";
+	elseif(strlen($Category)>49) {
+		$_SESSION["ErrorMsg"] = "Category title should be less than 50 characters";
+			Redirect_to("Categories.php");
+
 	}else{
 		//Query to insert category in DB when all is fine
 		global $ConnectingDB;

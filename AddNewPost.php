@@ -3,38 +3,48 @@ require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
 if(isset($_POST["Submit"])) {
-	$Category = $_POST["CategoryTitle"];
+	$PostTitle = $_POST["PostTitle"];
+	$Category = $_POST['Category'];
+	$Image = $_FILES["Image"]["name"];
+	$Target = "uploads/".basename($_FILES["Image"]["name"]);
+	$PostText = $_POST['PostDescription'];
 	$Admin = "Narzullo";
 	date_default_timezone_set("Asia/Tashkent");
 	$CurrentTime = time();
 	
 	$DateTime = strftime("%B-%d-%Y %H:%M:%S", $CurrentTime); 
 
-	if(empty($Category)) {
-		$_SESSION["ErrorMsg"] = "All fields must be filled out";
-		Redirect_to("Categories.php");
-	}elseif(strlen($Category)<3) {
-		$_SESSION["ErrorMsg"] = "Category title should be greater than 2 characters";
+	if(empty($PostTitle)) {
+		$_SESSION["ErrorMsg"] = "Title cant be empty";
+		Redirect_to("AddNewPost.php");
+	}elseif(strlen($PostTitle)<5) {
+		$_SESSION["ErrorMsg"] = "Post title should be greater than 5 characters";
+		Redirect_to("AddNewPost.php");
 	}
-	elseif(strlen($Category)>244) {
-		$_SESSION["ErrorMsg"] = "Category title should be less than 244 characters";
+	elseif(strlen($PostText)>999) {
+		$_SESSION["ErrorMsg"] = "Post Description  title should be less than 1000 characters";
+			Redirect_to("AddNewPost.php");
 	}else{
-		//Query to insert category in DB when all is fine
+		//Query to insert Post in DB when all is fine
 		global $ConnectingDB;
-		$sql = "INSERT INTO category(title,author,datetime)";
-		$sql .="VALUES(:categoryName,:adminName,:dateTime)";
+		$sql = "INSERT INTO post(datetime,title,category,author,image,post)";
+		$sql .="VALUES(:dateTime,:PostTitle,:categoryName,:adminName,:imageName,:PostDescription)";
 		$stmt = $ConnectingDB->prepare($sql);
+		$stmt->bindValue(':dateTime',$DateTime);
+		$stmt->bindValue(':PostTitle',$PostTitle);
 		$stmt->bindValue(':categoryName',$Category);
 		$stmt->bindValue(':adminName',$Admin);
-		$stmt->bindValue('dateTime',$DateTime);
+		$stmt->bindValue(':imageName',$Image);
+		$stmt->bindValue(':PostDescription',$PostText);
 		$Execute=$stmt->execute();
+		move_uploaded_file($FILES["Image"]["tmp_name"], $Target);
 
 		if($Execute){
-			$_SESSION["SuccessMsg"] = "Category  with id : ".$ConnectingDB->lastInsertId()."  Added Successfully";
-			Redirect_to("Categories.php");
+			$_SESSION["SuccessMsg"] = "Post  witsh id : ".$ConnectingDB->lastInsertId()."  Added Successfully";
+			Redirect_to("AddNewPost.php");
 		}else{
 			$_SESSION['ErrorMsg'] = "Something went wrong. Try again !";
-			Redirect_to("Categories.php");
+			Redirect_to("AddNewPost.php");
 		}
 	}
 } //Ending of submit Button If-Condition
@@ -116,47 +126,47 @@ if(isset($_POST["Submit"])) {
 			<div class="offset-lg-1 col-lg-10" style="min-height: 400px;">
 				<?php echo ErrorMsg();
 				echo SuccessMsg(); ?>
-				<form class="" action="Categories.php" method="post">
+				<form class="" action="AddNewPost.php" method="post" enctype="multipart/form-data">
 					 <div class="card bg-secondary text-light mb-3">
-					 		<div class="card-body bg-dark">
-					 			<div class="form-group">
-					 				<label for="title"	><span class="FieldInfo">Post Title:</span></label>
-					 				<input class="form-control" type="text" name="PostTitle" id="title" placeholder="Type title here" value="">
-					 			</div>
-					 			<div class="form-group">
-					 				<label for="title"	><span class="FieldInfo">Chose Category </span></label>
-					 				<select class="form-control" name="Category" id="CategoryTitle">
-					 					<!-- Fetching all the categoties from category table -->
-					 					<?php global $ConnectingDB;
-					 					$sql = "SELECT id, title FROM category";
-					 					$stmt = $ConnectingDB->query($sql);
-					 					while($DateRows = $stmt->fetch()) {
-					 						$Id = $DateRows['id'];
-					 						$CategoryName = $DateRows['title'];
-					 					?>
-					 					<option><?php echo $CategoryName;  ?></option>
-					 					<?php } ?>
-					 				</select>
-					 			</div>
-					 			<div class="form-group mb-1">
-					 				<div class="custom-file">
-					 				<input class="custom-file-input" type="File" name="Image" id="imageSelect" value="">
-					 				<label for="imageSelect" class="custom-file-label">Select Image</label>
-					 			</div>
-					 		</div>
-					 		<div class="form-group">
-					 			<label for="Post"><span class="FieldInfo">Post:</span></label>
-					 			<textarea class="form-control" name="PostDescription" id="Post" cols="30" rows="10"></textarea>
-					 		</div>
-					 			<div class="row">
-					 				<div class="col-lg-6 mb-2">
-					 					<a href="Dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-arrow-left"></i>Back to Dashboard </a>
-					 				</div>
-					 				<div class="col-lg-6 mb-2">
-					 				<button type="Submit" name="Submit" class="btn btn-success btn-block"><i class="fas fa-check"></i>Publish</button>
-					 				</div>
-					 			</div>
-					 		</div>
+							<div class="card-body bg-dark">
+								<div class="form-group">
+									<label for="title"	><span class="FieldInfo">Post Title:</span></label>
+									<input class="form-control" type="text" name="PostTitle" id="title" placeholder="Type title here" value="">
+								</div>
+								<div class="form-group">
+									<label for="CategoryTitle"	><span class="FieldInfo">Chose Category </span></label>
+									<select class="form-control" name="Category" id="CategoryTitle">
+										<!-- Fetching all the categoties from category table -->
+										<?php global $ConnectingDB;
+										$sql = "SELECT id, title FROM category";
+										$stmt = $ConnectingDB->query($sql);
+										while($DateRows = $stmt->fetch()) {
+											$Id = $DateRows['id'];
+											$CategoryName = $DateRows['title'];
+										?>
+										<option><?php echo $CategoryName;  ?></option>
+										<?php } ?>
+									</select>
+								</div>
+								<div class="form-group mb-1">
+									<div class="custom-file">
+									<input class="custom-file-input" type="File" name="Image" id="imageSelect" value="">
+									<label for="imageSelect" class="custom-file-label">Select Image</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="Post"><span class="FieldInfo">Post:</span></label>
+								<textarea class="form-control" name="PostDescription" id="Post" cols="30" rows="10"></textarea>
+							</div>
+								<div class="row">
+									<div class="col-lg-6 mb-2">
+										<a href="Dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-arrow-left"></i>Back to Dashboard </a>
+									</div>
+									<div class="col-lg-6 mb-2">
+									<button type="Submit" name="Submit" class="btn btn-success btn-block"><i class="fas fa-check"></i>Publish</button>
+									</div>
+								</div>
+							</div>
 					 </div>
 				</form>
 			</div>
