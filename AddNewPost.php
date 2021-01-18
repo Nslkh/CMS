@@ -6,7 +6,7 @@ if(isset($_POST["Submit"])) {
 	$PostTitle = $_POST["PostTitle"];
 	$Category = $_POST['Category'];
 	$Image = $_FILES["Image"]["name"];
-	$Target = "uploads/".basename($_FILES["Image"]["name"]);
+	$Target = "Uploads/".basename($_FILES["Image"]["name"]);
 	$PostText = $_POST['PostDescription'];
 	$Admin = "Narzullo";
 	date_default_timezone_set("Asia/Tashkent");
@@ -37,10 +37,10 @@ if(isset($_POST["Submit"])) {
 		$stmt->bindValue(':imageName',$Image);
 		$stmt->bindValue(':PostDescription',$PostText);
 		$Execute=$stmt->execute();
-		move_uploaded_file($FILES["Image"]["tmp_name"], $Target);
+		move_uploaded_file($_FILES["Image"]["tmp_name"], $Target);
 
 		if($Execute){
-			$_SESSION["SuccessMsg"] = "Post  witsh id : ".$ConnectingDB->lastInsertId()."  Added Successfully";
+			$_SESSION["SuccessMsg"] = "Post  with id : ".$ConnectingDB->lastInsertId()."  Added Successfully";
 			Redirect_to("AddNewPost.php");
 		}else{
 			$_SESSION['ErrorMsg'] = "Something went wrong. Try again !";
