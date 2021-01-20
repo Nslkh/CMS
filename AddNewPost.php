@@ -67,7 +67,7 @@ if(isset($_POST["Submit"])) {
 	<div style="height:10px; background:#27aae1;"></div>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
-			<a href="#" class="navbar-brand">EduTheDevs</a>
+			<a href="#" class="navbar-brand">Narzullo.co</a>
 			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS" >
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -182,9 +182,11 @@ if(isset($_POST["Submit"])) {
 			<div class="row">
 				<div class="col">
 				<p class="lead text-center">Made By | Narzullo Salakhidinov | <span id="year"></span> &copy; All right reserved </p>
+
 			</div>
 		</div>
 		</div>
+		<div style="height:10px; background:#27aae1;"></div>
 	</footer>
 	<!-- FOOTER END -->
 	<!-- jQuery and Bootstrap Bundle (includes Popper) -->
