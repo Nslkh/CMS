@@ -2,6 +2,7 @@
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +63,8 @@ require_once ("includes/Sessions.php");
 				<!-- MAIN AREA START -->
 				<div class="col-sm-8" >
 					<h1>The Complet Responsive CMS Blog</h1>
-					<?php
+					
+					<?php  
 					global $ConnectingDB;
 					if(isset($_GET["SearchButton"])){
 						$Search = $_GET["Search"];
@@ -89,6 +91,8 @@ require_once ("includes/Sessions.php");
 						$PostDescription = $DataRows['post'];
 					?>
 					<div class="card">
+						<?php echo ErrorMsg();
+						echo SuccessMsg(); ?>
 						<img src="Uploads/<?php echo htmlentities($Image) ; ?>"  style="max-height: 450px;" class="img-fluid card-img-top" />
 						<div class="card-body">
 							<h4 class="card-title"><?php echo htmlentities($PostTitle); ?></h4>
@@ -98,12 +102,13 @@ require_once ("includes/Sessions.php");
 							<p class="card-text">
 								<?php if (strlen($PostDescription>150)) {
 								$PostDescription = substr($PostDescription,0,150)."...";}echo htmlspecialchars ($PostDescription); ?>
-							</p>
-							<a href="FullPost.php" style="float: right">
-								<span class="btn btn-info">Read More>></span>
+							<a href="FullPost.php?id=<?php echo $PostId?>" style="float: right">
+								<span class="btn btn-info my-4">Read More>></span>
 							</a>
+							</p>
 						</div>
 					</div>
+
 					<?php } ?>
 				</div>
 				<!-- MAIN AREA END -->

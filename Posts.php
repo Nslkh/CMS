@@ -93,6 +93,8 @@ require_once ("includes/Sessions.php");
 	<section class="container py-2 mb-4">
 		<div class="row">
 			<div class="col-lg-12">
+				<?php echo ErrorMsg();
+					echo SuccessMsg(); ?>
 				<table class="table table-striped table-hover">
 					<thead class="thead-dark">
 						<tr>
@@ -113,13 +115,13 @@ require_once ("includes/Sessions.php");
 					$stmt = $ConnectingDB->query($sql);
 					$Sr = 0;
 					while ($DataRows = $stmt->fetch()) {
-														$Id 				= $DataRows['id'];
-								$DateTime 	= $DataRows['datetime'];
-								$PostTitle 	= $DataRows['title'];
-										$Category 	=	$DataRows['category'];
-												$Admin			= $DataRows['author'];
-												$Image 			= $DataRows['image'];
-								$PostText 	= $DataRows['post'];
+								$Id 		= $DataRows["id"];
+								$DateTime 	= $DataRows["datetime"];
+								$PostTitle 	= $DataRows["title"];
+								$Category 	= $DataRows["category"];
+								$Admin		= $DataRows["author"];
+								$Image 		= $DataRows["image"];
+								$PostText 	= $DataRows["post"];
 						$Sr++;
 					?>
 					<tbody>
@@ -149,11 +151,11 @@ require_once ("includes/Sessions.php");
 							<td><img src="Uploads/<?php echo $Image ; ?>" width="170px;" height="50px"</td>
 							<td>Comments</td>
 							<td>
-								<a href="#"><span class="btn btn-warning">Edit</span></a>
-								<a href="#"><span class="btn btn-danger">Delete</span></a>
+								<a href="EditPost.php?id=<?php echo $Id;?>"><span class="btn btn-warning">Edit</span></a>
+								<a href="DeletePost.php?id=<?php echo $Id; ?>"><span class="btn btn-danger">Delete</span></a>
 							</td>
 							<td>
-								<a href="#"><span class="btn btn-primary">Live Preview</span></a>
+								<a href="FullPost.php?id=<?php echo $Id;?> " target="_blank"><span class="btn btn-primary">Live Preview</span></a>
 							</td>
 						</tr>
 					</tbody>

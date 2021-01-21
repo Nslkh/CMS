@@ -11,6 +11,7 @@ function ErrorMsg(){
 	}
 }
 
+
 function SuccessMsg(){
 	if(isset($_SESSION['SuccessMsg'])) {
 		$Output = "<div class=\"alert alert-success\">";

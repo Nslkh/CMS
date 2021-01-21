@@ -78,7 +78,7 @@ require_once ("includes/Sessions.php");
 					else {
 					$PostIdFromURL = $_GET["id"];
 					if(!isset($PostIdFromURL)) {
-						$_SESSION["ErrorMessage"]="Bad Request !";
+						$_SESSION["ErrorMsg"]="Bad Request !";
 						Redirect_to("Blog.php"); 
 					}
 					$sql = "SELECT * FROM post WHERE id='$PostIdFromURL'";
