@@ -3,6 +3,44 @@ require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
 $SearchQueryParameters = $_GET["id"];
+
+if(isset($_POST["Submit"])) {
+	$Name = $_POST["CommenterName"];
+	$Email = $_POST["CommenterEmail"];
+	$Comment = $_POST["CommenterThoughts"];
+	date_default_timezone_set("Asia/Tashkent");
+	$CurrentTime = time();	
+	$DateTime = strftime("%B-%d-%Y %H:%M:%S", $CurrentTime);
+
+	if(empty($Name) || empty($Email) || empty($Comment)) {
+		$_SESSION["ErrorMsg"] = "All fields must be filled out";
+		Redirect_to("FullPost.php?id=$SearchQueryParameters;");
+	}elseif(strlen($Comment)>500) {
+		$_SESSION["ErrorMsg"] = "Comment length should be less than 500 characters";
+		Redirect_to("FullPost.php?id=$SearchQueryParameters;");
+	}
+	else{
+		//Query to insert COMMENT in DB when all is fine
+		global $ConnectingDB;
+		$sql = "INSERT INTO comments(datetime,name,email,comment,approvedby,status,post_id)";
+		$sql .="VALUES(:dateTime,:name,:email,:comment,'Pending','OFF',:PostIdFromURL)";
+		$stmt = $ConnectingDB->prepare($sql);
+		$stmt->bindValue(':dateTime',$DateTime);
+		$stmt->bindValue(':name',$Name);
+		$stmt->bindValue(':email',$Email);
+		$stmt->bindValue(':comment',$Comment);
+		$stmt->bindValue(':PostIdFromURL',$SearchQueryParameters);
+		$Execute=$stmt->execute();
+	
+		if($Execute){
+			$_SESSION["SuccessMsg"] = "Comment Submitted Successfully";
+		Redirect_to("FullPost.php?id={$SearchQueryParameters};");
+		}else{
+			$_SESSION['ErrorMsg'] = "Something went wrong. Try again !";
+		Redirect_to("FullPost.php?id={$SearchQueryParameters};");
+		}
+	}
+} //Ending of submit Button If-Condition
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,6 +101,10 @@ $SearchQueryParameters = $_GET["id"];
 				<!-- MAIN AREA START -->
 				<div class="col-sm-8" >
 					<h1>The Complet Responsive CMS Blog</h1>
+					<?php 
+						echo SuccessMsg();
+						echo ErrorMsg();
+					?>
 					<?php
 					global $ConnectingDB;
 					if(isset($_GET["SearchButton"])){

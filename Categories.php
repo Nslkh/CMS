@@ -2,6 +2,7 @@
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
+
 if(isset($_POST["Submit"])) {
 	$Category = $_POST["CategoryTitle"];
 	$Admin = "Narzullo";
