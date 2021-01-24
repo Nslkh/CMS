@@ -143,14 +143,47 @@ if(isset($_POST["Submit"])) {
 							<small class="text-muted">Written by <?php echo htmlentities($Admin); ?> On <?php echo htmlentities($DateTime); ?></small>
 							<span style="float: right; " class="badge badge-dark text-light">Comments </span>
 							<hr>
-							<p class="card-text">
+							<p class="card-text ">
 								<?php 
 								echo htmlspecialchars ($PostDescription); ?>
 							</p>
 						</div>
 					</div>
 					<?php } ?>
+					<br>  	
 					<!-- COMMENT PART START -->
+
+					<!-- FETCHING EXISTING COMMENT -->
+				 <span class="FieldInfo" >Comments</span>
+				 <br><br>
+				 
+
+					<?php 
+					global $ConnectingDB;
+					$sql = "SELECT * FROM comments
+					WHERE post_id='$SearchQueryParameters' ";
+					$stmt = $ConnectingDB->query($sql);
+					while ($DataRows = $stmt->fetch()) {
+						$CommentDate = $DataRows['datetime'];
+						$CommenterName = $DataRows['name'];
+						$CommentContent = $DataRows['comment'];
+
+					?>
+					<div >
+						<div class="media CommentBlock">
+							<img class="d-block imf-fluid align-self-start" src="images/comment.png" alt="">
+							<div class="media-body ml-2">
+								<h6 class="lead"><?php echo $CommenterName; ?></h6>
+								<p class="small"><?php echo $CommentDate; ?></p>
+								<p><?php echo $CommentContent; ?></p>
+							</div>
+						</div>
+					</div>
+					<hr>
+				<?php } ?>
+
+
+					<!-- FETCHING EXISTING COMMENT END -->
 					<div class="">
 						<form class="" action="FullPost.php?id=<?php echo $SearchQueryParameters; ?>" method="post">
 							<div class="card mb-3">
@@ -189,7 +222,10 @@ if(isset($_POST["Submit"])) {
 						</form>
 					</div>
 				</div>
+				<!-- COMMENT END -->
+
 				<!-- MAIN AREA END -->
+
 				<!-- SIDE AREA START -->
 				<div class="col-sm-4" style="min-height: 40px;background: green;">
 				</div>
