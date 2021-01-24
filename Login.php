@@ -11,18 +11,18 @@ if(isset($_POST["Submit"])) {
 		Redirect_to("Login.php");
 	}else{
 		//CODE FOR CHECKING USERNAME AND PASSWORD FROM DATABASE
-		global $ConnectingDB;
-		$sql = "SELECT * FROM admins username=:userName AND password=:password LIMIT 1";
-		$stmt = $ConnectingDB->prepare($sql);
-		$stmt->bindValue(':userName',$UserName);
-		$stmt->bindValue(':password',$Password);
-		$stmt->execute();
-		$Result = $stmt->rowcount();
-		if ($Result==1) {
-			echo "GOOD";
-		}else{
-			echo "BAD";
-		}
+		$Found_Account = Login_Attemt($UserName,$Password);
+ 		if($Found_Account) {
+ 			$_SESSION["User_ID"] = $Found_Account["id"];
+ 			$_SESSION["UserName"] = $Found_Account["username"];
+ 			$_SESSION["AdminName"] = $Found_Account["aname"];
+
+ 			$_SESSION['SuccessMsg'] = "Welcome ".$_SESSION["AdminName"];
+ 			Redirect_to("Login.php");
+ 		}else{
+ 			$_SESSION['ErrorMsg'] = "Incorrect Username/Password";
+ 			Redirect_to("Login.php");
+ 		}
  	}
 }
 
@@ -34,7 +34,7 @@ if(isset($_POST["Submit"])) {
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie-edge">
-		<title>Document</title>
+		<title>Login </title>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
