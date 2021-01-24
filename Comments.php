@@ -2,48 +2,8 @@
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
-
 $SESSION["TrackingURL"]=$_SERVER["PHP_SELF"];
-// echo $SESSION["TrackingURL"];
 Confirm_Login(); 
-
-
-if(isset($_POST["Submit"])) {
-	$Category = $_POST["CategoryTitle"];
-	$Admin = $_SESSION["UserName"] ;	
-	date_default_timezone_set("Asia/Tashkent");
-	$CurrentTime = time();
-	
-	$DateTime = strftime("%B-%d-%Y %H:%M:%S", $CurrentTime);
-	if(empty($Category)) {
-		$_SESSION["ErrorMsg"] = "All fields must be filled out";
-		Redirect_to("Categories.php");
-	}elseif(strlen($Category)<3) {
-		$_SESSION["ErrorMsg"] = "Category title should be greater than 2 characters";
-			Redirect_to("Categories.php");
-	}
-	elseif(strlen($Category)>49) {
-		$_SESSION["ErrorMsg"] = "Category title should be less than 50 characters";
-			Redirect_to("Categories.php");
-	}else{
-		//Query to insert category in DB when all is fine
-		global $ConnectingDB;
-		$sql = "INSERT INTO category(title,author,datetime)";
-		$sql .="VALUES(:categoryName,:adminName,:dateTime)";
-		$stmt = $ConnectingDB->prepare($sql);
-		$stmt->bindValue(':categoryName',$Category);
-		$stmt->bindValue(':adminName',$Admin);
-		$stmt->bindValue('dateTime',$DateTime);
-		$Execute=$stmt->execute();
-		if($Execute){
-			$_SESSION["SuccessMsg"] = "Category  with id : ".$ConnectingDB->lastInsertId()."  Added Successfully";
-			Redirect_to("Categories.php");
-		}else{
-			$_SESSION['ErrorMsg'] = "Something newt_win_entries(title, text, suggested_width, flex_down, flex_up, data_width, items, button1) wrong. Try again !";
-			Redirect_to("Categories.php");
-		}
-	}
-} //Ending of submit Button If-Condition
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,11 +11,11 @@ if(isset($_POST["Submit"])) {
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie-edge">
-		<title>Categories</title>
+		<title>Comments</title>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
-		
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+		
 	</head>
 	<body>
 		<!-- NAVBAR -->
@@ -91,7 +51,7 @@ if(isset($_POST["Submit"])) {
 						</li>
 					</ul>
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"  ><a href="logout.php" class="nav-link"> <i class="fas fa-user-times text-danger"></i> Logout</a></li>
+						<li class="nav-item"  ><a href="logout.php" class="nav-link"><i class="fas fa-user-times text-danger"></i> Logout</a>
 					</ul>
 				</div>
 			</div>
@@ -103,43 +63,58 @@ if(isset($_POST["Submit"])) {
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h1> <i class="fas fa-edit" style="color: #27aae1;"></i>Manage the Categories</h1>
+						<h1><i class="fas fa-comments" style="color: #27aae1"></i> Manage Comments</h1>
 					</div>
 				</div>
 			</div>
 		</header>
-		<!-- MAIN AREA -->
+		<!-- HEADER END -->
+		<!-- MAIN AREA START  -->
 		<section class="container py-2 mb-4">
-			<div class="row">
-				<div class="offset-lg-1 col-lg-10" style="min-height: 400px;">
-					<?php echo ErrorMsg();
-					echo SuccessMsg(); ?>
-					<form class="" action="Categories.php" method="post">
-						<div class="card bg-secondary text-light mb-3">
-							<div class="card-header">
-								<h1>Add New Category</h1>
-							</div>
-							<div class="card-body bg-dark">
-								<div class="form-group">
-									<label for="title"	><span class="FieldInfo">Categoty Title:</span></label>
-									<input class="form-control" type="text" name="CategoryTitle" id="title" placeholder="Type title here" value="">
-								</div>
-								<div class="row">
-									<div class="col-lg-6 mb-2">
-										<a href="Dashboard.php" class="btn btn-warning btn-block"><i class="fas fa-arrow-left"></i>Back to Dashboard </a>
-									</div>
-									<div class="col-lg-6 mb-2">
-										<button type="Submit" name="Submit" class="btn btn-success btn-block"><i class="fas fa-check"></i>Publish</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
+			<div class="row" style="min-height:30px;">
+				<div class="col-lg-12" style="min-height: 400px;">
+					<h2>Un-Approved Comments</h2>
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th>No.</th>
+								<th>Name</th>
+								<th>Date&Time</th>
+								<th>Comment</th>
+								<th>Action</th>
+								<th>Details</th>
+							</tr>
+						</thead>
+					<?php 
+					global $ConnectingDB;
+					$sql =  "SELECT * FROM comments WHERE status='OFF' ORDER BY id desc";
+					$Execute = $ConnectingDB->query($sql);
+					$SrNo = 0;
+					while ($DataRows=$Execute->fetch()) {
+						$CommentId = $DataRows["id"];
+						$DateTimeOfComment = $DataRows["datetime"];
+						$CommenterName = $DataRows["name"];
+						$CommentContent = $DataRows["comment"];
+						$CommentPostId = $DataRows["post_id"];
+						$SrNo++;
+					?>		
+					<tbody>
+						<tr>
+							<td><?php echo $SrNo;  ?></td>
+							<td><?php echo $DateTimeOfComment;  ?></td>
+							<td><?php echo $CommenterName;  ?></td>
+							<td><?php echo $CommentContent;  ?></td>
+							<td>Approve Delete</td>
+							<td><a href="FullPost.php?id <?php echo $CommentPostId; ?>"></a></td>							
+						</tr>
+					</tbody>
+					<?php } ?>
+					</table>	
 				</div>
 			</div>
 		</section>
-		<!-- MAIN AREA END-->
-		<!-- HEADER END -->
+		<!-- MAIN AREA  END  -->
+		
 		<!-- FOOTER -->
 		<footer class="bg-dark text-white">
 			<div class="container">

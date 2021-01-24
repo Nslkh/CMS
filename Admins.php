@@ -2,13 +2,17 @@
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
+$SESSION["TrackingURL"]=$_SERVER["PHP_SELF"];
+Confirm_Login(); 
+
+
 
 if(isset($_POST["Submit"])) {
 	$UserName = $_POST["Username"];
 	$Name = $_POST["Name"];
 	$Password = $_POST["Password"];
 	$ConfirmPassword = $_POST["ConfirmPassword"];
-	$Admin = "Narzullo";
+	$Admin = $_SESSION["UserName"] ;	
 	date_default_timezone_set("Asia/Tashkent");
 	$CurrentTime = time();
 	$DateTime = strftime("%B-%d-%Y %H:%M:%S", $CurrentTime);

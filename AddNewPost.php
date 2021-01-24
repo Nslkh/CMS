@@ -2,13 +2,16 @@
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
+$SESSION["TrackingURL"]=$_SERVER["PHP_SELF"];
+Confirm_Login(); 
+
 if(isset($_POST["Submit"])) {
 	$PostTitle = $_POST["PostTitle"];
 	$Category = $_POST['Category'];
 	$Image = $_FILES["Image"]["name"];
 	$Target = "Uploads/".basename($_FILES["Image"]["name"]);
 	$PostText = $_POST['PostDescription'];
-	$Admin = "Narzullo";
+	$Admin = $_SESSION["UserName"] ;	
 	date_default_timezone_set("Asia/Tashkent");
 	$CurrentTime = time();
 	

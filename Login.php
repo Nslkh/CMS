@@ -2,6 +2,13 @@
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
+$SESSION["TrackingURL"]=$_SERVER["PHP_SELF"];
+Confirm_Login(); 
+
+
+if(isset($SESSION["UserId"])) {
+	Redirect_to("Dashboard.php");
+}
 
 if(isset($_POST["Submit"])) {
 	$UserName = $_POST['Username'];
@@ -13,12 +20,16 @@ if(isset($_POST["Submit"])) {
 		//CODE FOR CHECKING USERNAME AND PASSWORD FROM DATABASE
 		$Found_Account = Login_Attemt($UserName,$Password);
  		if($Found_Account) {
- 			$_SESSION["User_ID"] = $Found_Account["id"];
+ 			$_SESSION["UserId"] = $Found_Account["id"];
  			$_SESSION["UserName"] = $Found_Account["username"];
  			$_SESSION["AdminName"] = $Found_Account["aname"];
 
- 			$_SESSION['SuccessMsg'] = "Welcome ".$_SESSION["AdminName"];
- 			Redirect_to("Login.php");
+ 			$_SESSION['SuccessMsg'] = "Welcome ".$_SESSION["AdminName"]."!";
+
+ 			if(isset($SESSION["TrackingURL"])){
+ 			Redirect_to("Dashboard.php");	
+ 			}
+ 			Redirect_to("Dashboard.php");
  		}else{
  			$_SESSION['ErrorMsg'] = "Incorrect Username/Password";
  			Redirect_to("Login.php");
