@@ -199,7 +199,8 @@ Confirm_Login();
 							echo $Total;
 							}
 							?>
-						</span>						</td>
+						</span>
+						</td>
 						<td>
 							<a target="_blank" href="FullPost.php?id=<?php echo $PostId; ?>"><span class="btn btn-info">Preview</span>
 							</a>
