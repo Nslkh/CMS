@@ -7,10 +7,10 @@ if(isset($_GET["id"])) {
 	$SearchQueryParameters = $_GET["id"];
 	global $ConnectingDB;
 	$Admin = $_SESSION["AdminName"];
-	$sql = "UPDATE comments SET status='ON' , approvedby='$Admin' WHERE id='$SearchQueryParameters' ";
+	$sql = "UPDATE comments SET status='OFF' , approvedby='$Admin' WHERE id='$SearchQueryParameters' ";
 	$Execute = $ConnectingDB->query($sql);
 	if($Execute) {
-		$_SESSION["SuccessMsg"]="Comment Approved Successfully !";
+		$_SESSION["SuccessMsg"]="Comment Dis-Approved Successfully !";
 		Redirect_to("Comments.php");
 
 	}else{
