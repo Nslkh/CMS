@@ -94,62 +94,125 @@ Confirm_Login();
 	<br>
 	<!-- HEADER END -->
 	<!-- MAIN AREA -->
-	<section class="container py-2 mb-4">
-		<div class="row">
-			<div class="col-lg-12">
-				<?php
-					echo ErrorMsg();
-					echo SuccessMsg(); 
-				?>		
-				<!-- LEFT SIDE AREA START  -->
-				<div class="col-lg-2 d-none d-md-block">
-					<div class="card text-center bg-dark text-white mb-3">
-						<div class="card-body">
-							<h1 class="lead">Posts</h1>
-							<h4 class="display-5">
-								<i class="fab fa-readme"></i>
-								100
-							</h4>
-						</div>
-					</div>
-
-					<div class="card text-center bg-dark text-white mb-3">
-						<div class="card-body">
-							<h1 class="lead">Categories</h1>
-							<h4 class="display-5">
-								<i class="fas fa-folder"></i>
-								100
-							</h4>
-						</div>
-					</div>
-
-					<div class="card text-center bg-dark text-white mb-3">
-						<div class="card-body">
-							<h1 class="lead">Admins</h1>
-							<h4 class="display-5">
-								<i class="fas fa-users"></i>
-								100
-							</h4>
-						</div>
-					</div>
-
-					<div class="card text-center bg-dark text-white mb-3">
-						<div class="card-body">
-							<h1 class="lead">Comments</h1>
-							<h4 class="display-5">
-								<i class="fas fa-comments"></i>
-								100
-							</h4>
-						</div>
-					</div>
-
-
+<section class="container py-2 mb-4">
+	<div class="row">
+		<?php echo ErrorMsg();
+			echo SuccessMsg(); ?>
+			<!-- LEFT SIDE AREA START  -->
+		<div class="col-lg-2 d-none d-md-block">
+			<div class="card text-center bg-dark text-white mb-3">
+				<div class="card-body">
+					<h1 class="lead">Posts</h1>
+					<h4 class="display-5">
+						<i class="fab fa-readme"></i>
+						<?php TotalPosts(); ?>
+					</h4>
 				</div>
-				<!-- LEFT SIDE AREA END  -->
-				
+			</div>
+
+				<div class="card text-center bg-dark text-white mb-3">
+				<div class="card-body">
+					<h1 class="lead">Categories</h1>
+					<h4 class="display-5">
+						<i class="fas fa-folder"></i>
+						<?php TotalCategories(); ?>
+					</h4>
+				</div>
+			</div>
+
+			
+				<div class="card text-center bg-dark text-white mb-3">
+				<div class="card-body">
+					<h1 class="lead">Admins</h1>
+					<h4 class="display-5">
+						<i class="fas fa-users"></i>
+						<?php TotalAdmins(); ?>
+					</h4>
+				</div>
+			</div>
+
+
+			<div class="card text-center bg-dark text-white mb-3">
+				<div class="card-body">
+					<h1 class="lead">Comments</h1>
+					<h4 class="display-5">
+						<i class="fas fa-comments"></i>
+						<?php TotalComments(); ?>
+					</h4>
+				</div>
 			</div>
 		</div>
-	</section>
+
+			
+			<!-- LEFT SIDE AREA END -->
+
+
+			<!-- RIGHT SIDE AREA START -->
+			<div class="col-lg-10">
+				<h1>Top Posts</h1>
+				<table class="table table-striped table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th>No.</th>
+							<th>Title</th>
+							<th>Date&Time</th>
+							<th>Author</th>
+							<th>Comments</th>
+							<th>Details</th>
+						</tr>
+					</thead>
+					<?php
+					$SrNo = 0;
+					global $ConnectingDB;
+					$sql = "SELECT *  FROM post ORDER BY id desc LIMIT 0,5";
+					$stmt = $ConnectingDB->query($sql);
+					while ($DataRows=$stmt->fetch()) {
+						$PostId = $DataRows["id"];
+						$DateTime = $DataRows["datetime"];
+						$Author = $DataRows["author"];
+						$Title = $DataRows["title"];
+						$SrNo++;
+					?>
+					<tbody>
+						<td><?php echo $SrNo; ?></td>
+						<td><?php echo $PostId; ?></td>
+						<td><?php echo $DateTime; ?></td>
+						<td><?php echo $Author; ?></td>
+						<td>
+							<?php 
+							$Total=ApproveCommentsAccordingToPost($PostId);
+							if($Total>0) {
+								?>
+							<span class="badge badge-success">
+								<?php 
+							echo $Total;
+						}
+							?>
+						</span>
+
+							<?php 
+								$Total=DisApproveCommentsAccordingToPost($PostId);
+							if($Total>0) {
+								?>
+							<span class="badge badge-danger">
+								<?php 
+							echo $Total;
+							}
+							?>
+						</span>						</td>
+						<td>
+							<a target="_blank" href="FullPost.php?id=<?php echo $PostId; ?>"><span class="btn btn-info">Preview</span>
+							</a>
+						</td>
+						
+					</tbody>
+				<?php } ?>
+				</table>
+			</div>
+			<!-- RIGHT SIDE AREA END -->
+
+	</div>
+</section>
 	<!-- MAIN AREA END -->
 	<!-- FOOTER -->
 	<footer class="bg-dark text-white">
