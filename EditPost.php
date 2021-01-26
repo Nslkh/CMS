@@ -1,23 +1,22 @@
+<<?php require_once("Includes/DB.php"); ?>
+<?php require_once("Includes/Functions.php"); ?>
+<?php require_once("Includes/Sessions.php"); ?>
+<?php Confirm_Login(); ?> 
 <?php
-require_once ("includes/DB.php");
-require_once ("includes/Functions.php");
-require_once ("includes/Sessions.php");
-$SESSION["TrackingURL"]=$_SERVER["PHP_SELF"];
-Confirm_Login(); 
-
-
 $SearchQueryParameters = $_GET['id'];
-if(isset($_POST["Submit"])) {
-	$PostTitle = $_POST["PostTitle"];
-	$Category = $_POST['Category'];
-	$Image = $_FILES["Image"]["name"];
-	$Target = "Uploads/".basename($_FILES["Image"]["name"]);
-	$PostText = $_POST['PostDescription'];
-	$Admin = "Narzullo";
-	date_default_timezone_set("Asia/Tashkent");
-	$CurrentTime = time();
-	
-	$DateTime = strftime("%B-%d-%Y %H:%M:%S", $CurrentTime);
+if(isset($_POST["Submit"])){
+  $PostTitle = $_POST["PostTitle"];
+  $Category  = $_POST["Category"];
+  $Image     = $_FILES["Image"]["name"];
+  $Target    = "Uploads/".basename($_FILES["Image"]["name"]);
+  $PostText  = $_POST["PostDescription"];
+  $Admin     = "Jazeb";
+  date_default_timezone_set("Asia/Karachi");
+  $CurrentTime = time();
+  $DateTime    = strftime("%B-%d-%Y %H:%M:%S",$CurrentTime); 
+
+
+
 	if(empty($PostTitle)) {
 		$_SESSION["ErrorMsg"] = "Title cant be empty";
 		Redirect_to("Posts.php");

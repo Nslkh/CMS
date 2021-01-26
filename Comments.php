@@ -2,8 +2,8 @@
 require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
-$SESSION["TrackingURL"]=$_SERVER["PHP_SELF"];
-Confirm_Login(); 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,46 +73,92 @@ Confirm_Login();
 		<section class="container py-2 mb-4">
 			<div class="row" style="min-height:30px;">
 				<div class="col-lg-12" style="min-height: 400px;">
+					<?php echo ErrorMsg();
+					echo SuccessMsg(); ?>
 					<h2>Un-Approved Comments</h2>
-					<table class="table table-striped table-hover">
-						<thead class="thead-dark">
-							<tr>
-								<th>No.</th>
-								<th>Name</th>
-								<th>Date&Time</th>
-								<th>Comment</th>
-								<th>Action</th>
-								<th>Details</th>
-							</tr>
-						</thead>
-					<?php 
-					global $ConnectingDB;
-					$sql =  "SELECT * FROM comments WHERE status='OFF' ORDER BY id desc";
-					$Execute = $ConnectingDB->query($sql);
-					$SrNo = 0;
-					while ($DataRows=$Execute->fetch()) {
-						$CommentId = $DataRows["id"];
-						$DateTimeOfComment = $DataRows["datetime"];
-						$CommenterName = $DataRows["name"];
-						$CommentContent = $DataRows["comment"];
-						$CommentPostId = $DataRows["post_id"];
-						$SrNo++;
-					?>		
-					<tbody>
-						<tr>
-							<td><?php echo $SrNo;  ?></td>
-							<td><?php echo $DateTimeOfComment;  ?></td>
-							<td><?php echo $CommenterName;  ?></td>
-							<td><?php echo $CommentContent;  ?></td>
-							<td>Approve Delete</td>
-							<td><a href="FullPost.php?id <?php echo $CommentPostId; ?>"></a></td>							
-						</tr>
-					</tbody>
-					<?php } ?>
-					</table>	
-				</div>
-			</div>
-		</section>
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th>No. </th>
+                <th>Date&Time</th>
+                <th>Name</th>
+                <th>Comment</th>
+                <th>Aprove</th>
+                <th>Action</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+          <?php
+          global $ConnectingDB;
+          $sql = "SELECT * FROM comments WHERE status='OFF' ORDER BY id desc";
+          $Execute =$ConnectingDB->query($sql);
+          $SrNo = 0;
+          while ($DataRows=$Execute->fetch()) {
+            $CommentId = $DataRows["id"];
+            $DateTimeOfComment = $DataRows["datetime"];
+            $CommenterName = $DataRows["name"];
+            $CommentContent= $DataRows["comment"];
+            $CommentPostId = $DataRows["post_id"];
+            $SrNo++;
+          ?>
+          <tbody>
+            <tr>
+              <td><?php echo htmlentities($SrNo); ?></td>
+              <td><?php echo htmlentities($DateTimeOfComment); ?></td>
+              <td><?php echo htmlentities($CommenterName); ?></td>
+              <td><?php echo htmlentities($CommentContent); ?></td>
+              <td> <a href="ApproveComments.php?id=<?php echo $CommentId;?>" class="btn btn-success">Approve</a>  </td>
+              <td> <a href="DeleteComments.php?id=<?php echo $CommentId;?>" class="btn btn-danger">Delete</a>  </td>
+              <td style="min-width:140px;"> <a class="btn btn-primary"href="FullPost.php?id=<?php echo $CommentPostId; ?>" target="_blank">Live Preview</a> </td>
+            </tr>
+          </tbody>
+          <?php } ?>
+          </table>
+          <h2>Approved Comments</h2>
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th>No. </th>
+                <th>Date&Time</th>
+                <th>Name</th>
+                <th>Comment</th>
+                <th>Approved by</th>
+                <th>Revert</th>
+                <th>Action</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+          <?php
+          global $ConnectingDB;
+          $sql = "SELECT * FROM comments WHERE status='ON' ORDER BY id desc";
+          $Execute =$ConnectingDB->query($sql);
+          $SrNo = 0;
+          while ($DataRows=$Execute->fetch()) {
+            $CommentId         = $DataRows["id"];
+            $DateTimeOfComment = $DataRows["datetime"];
+            $CommenterName     = $DataRows["name"];
+            $ApprovedBy        = $DataRows["approvedby"];
+            $CommentContent    = $DataRows["comment"];
+            $CommentPostId     = $DataRows["post_id"];
+            $SrNo++;
+          ?>
+          <tbody>
+            <tr>
+              <td><?php echo htmlentities($SrNo); ?></td>
+              <td><?php echo htmlentities($DateTimeOfComment); ?></td>
+              <td><?php echo htmlentities($CommenterName); ?></td>
+              <td><?php echo htmlentities($CommentContent); ?></td>
+              <td><?php echo htmlentities($ApprovedBy); ?></td>
+              <td style="min-width:140px;"> <a href="DisApproveComments.php?id=<?php echo $CommentId;?>" class="btn btn-warning">Dis-Approve</a>  </td>
+              <td> <a href="DeleteComments.php?id=<?php echo $CommentId;?>" class="btn btn-danger">Delete</a>  </td>
+              <td style="min-width:140px;"> <a class="btn btn-primary"href="FullPost.php?id=<?php echo $CommentPostId; ?>" target="_blank">Live Preview</a> </td>
+            </tr>
+          </tbody>
+          <?php } ?>
+          </table>
+        </div>
+      </div>
+    </section>
 		<!-- MAIN AREA  END  -->
 		
 		<!-- FOOTER -->

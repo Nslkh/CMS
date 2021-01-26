@@ -3,10 +3,10 @@ require_once ("includes/DB.php");
 require_once ("includes/Functions.php");
 require_once ("includes/Sessions.php");
 $SESSION["TrackingURL"]=$_SERVER["PHP_SELF"];
-Confirm_Login(); 
 
 
-if(isset($SESSION["UserId"])) {
+
+if(isset($_SESSION["UserId"])) {
 	Redirect_to("Dashboard.php");
 }
 
