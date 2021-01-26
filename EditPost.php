@@ -3,7 +3,7 @@
 <?php require_once("Includes/Sessions.php"); ?>
 <?php Confirm_Login(); ?> 
 <?php
-$SearchQueryParameters = $_GET['id'];
+$SearchQueryParameters= $_GET['id'];
 if(isset($_POST["Submit"])){
   $PostTitle = $_POST["PostTitle"];
   $Category  = $_POST["Category"];

@@ -135,6 +135,40 @@ if(isset($_POST["Submit"])) {
 							</div>
 						</div>
 					</form>
+					 <h2>Existing Categories</h2>
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th>No. </th>
+                <th>Date&Time</th>
+                <th> Categoty Name</th>
+                <th>Creator Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          <?php
+          global $ConnectingDB;
+          $sql = "SELECT * FROM category  ORDER BY id desc";
+          $Execute =$ConnectingDB->query($sql);
+          $SrNo = 0;
+          while ($DataRows=$Execute->fetch()) {
+            $CategoryId         = $DataRows["id"];
+            $CategoryDate = $DataRows["datetime"];
+            $CategoryName     = $DataRows["title"];
+            $CreatorName    = $DataRows["author"];
+            $SrNo++;
+          ?>
+          <tbody>
+            <tr>
+              <td><?php echo htmlentities($SrNo); ?></td>
+              <td><?php echo htmlentities($CategoryDate); ?></td>
+              <td><?php echo htmlentities($CategoryName); ?></td>
+              <td><?php echo htmlentities($CreatorName); ?></td>
+              <td> <a href="DeleteCategory.php?id=<?php echo $CategoryId;?>" class="btn btn-danger">Delete</a>  </td>
+            </tr>
+          </tbody>
+          <?php } ?>
+          </table>
 				</div>
 			</div>
 		</section>
