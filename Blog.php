@@ -66,6 +66,7 @@ require_once ("includes/Sessions.php");
 					
 					<?php  
 					global $ConnectingDB;
+					// SQL QUERY WHEN SEARCH BUTTON IS ACTIVE
 					if(isset($_GET["SearchButton"])){
 						$Search = $_GET["Search"];
 						$sql = "SELECT * FROM post
@@ -75,6 +76,16 @@ require_once ("includes/Sessions.php");
 						$stmt = $ConnectingDB->prepare($sql);
 						$stmt-> bindValue(':search','%' .$Search. '%');
 						$stmt->execute();
+					} // QUERY WHEN PAGINATION IS ACTIVE 
+					elseif(isset($_GET["Page"])){
+						$Page = $_GET["Page"];
+						if($Page ==0 || $Page<1){
+							$ShowPostFrom =0;
+						}else{	
+						$ShowPostFrom=($Page*4)-4;
+						}
+						$sql = "SELECT * FROM post ORDER BY id desc LIMIT $ShowPostFrom,4";
+						$stmt= $ConnectingDB->query($sql);
 					}
 					// THE DEFAULT SQL QUERY
 					else {
