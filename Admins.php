@@ -130,7 +130,7 @@ if(isset($_POST["Submit"])) {
 							<div class="card-body bg-dark">
 								<div class="form-group">
 									<label for="username"	><span class="FieldInfo">Username :</span></label>
-									<input class="form-control" type="text" name="Username" id="title" placeholder="Type title here" value="">
+									<input class="form-control" type="text" name="Username" id="title" value="">
 								</div>
 								<div class="form-group">
 									<label for="username"	><span class="FieldInfo">Name :</span></label>
