@@ -77,19 +77,20 @@ require_once ("includes/Sessions.php");
 						$stmt-> bindValue(':search','%' .$Search. '%');
 						$stmt->execute();
 					} // QUERY WHEN PAGINATION IS ACTIVE 
-					elseif(isset($_GET["Page"])){
-						$Page = $_GET["Page"];
-						if($Page ==0 || $Page<1){
-							$ShowPostFrom =0;
-						}else{	
-						$ShowPostFrom=($Page*4)-4;
+					elseif(isset($_GET["page"])){
+						$Page = $_GET["page"];	
+						if($Page == 0 || $Page<1){
+						$ShowPostFrom = 0;
+						}	else {
+
+						$ShowPostFrom=($Page*5)-5;
 						}
-						$sql = "SELECT * FROM post ORDER BY id desc LIMIT $ShowPostFrom,4";
+						$sql = "SELECT * FROM post ORDER BY id desc LIMIT $ShowPostFrom, 5";
 						$stmt= $ConnectingDB->query($sql);
 					}
 					// THE DEFAULT SQL QUERY
 					else {
-					$sql = "SELECT * FROM post ORDER BY id desc";
+					$sql = "SELECT * FROM post ORDER BY id desc LIMIT 0,3";
 					$stmt = $ConnectingDB->query($sql);
 					}
 					while ($DataRows = $stmt->fetch()) {
@@ -116,13 +117,44 @@ require_once ("includes/Sessions.php");
 								<?php if (strlen($PostDescription>150)) {
 								$PostDescription = substr($PostDescription,0,150)."...";}echo htmlspecialchars ($PostDescription); ?>
 							<a href="FullPost.php?id=<?php echo $PostId?>" style="float: right">
-								<span class="btn btn-info my-4">Read More>></span>
+								<span class="btn btn-info my-4" >Read More>></span>
 							</a>
 							</p>
 						</div>
 					</div>
 
 					<?php } ?>
+					<br>
+					 <!-- Pagination  -->
+					<nav>
+						<ul class="pagination  pagination -lg">
+							<?php 
+							global $ConnectingDB;
+							$sql = "SELECT COUNT(*) FROM post";
+							$stmt  = $ConnectingDB->query($sql);
+							$RowPagination = $stmt->fetch();
+							$TotalPosts=array_shift($RowPagination);
+							// echo $TotalPosts."<br>";
+							$PostPagination=$TotalPosts/5;
+							$PostPagination=ceil($PostPagination);
+							// 
+							// echo $PostPagination;
+							for ($i=1; $i <=$PostPagination ; $i++) { 
+								if(isset($Page)) {
+									if ($i == $Page) { 	?>
+							<li class="page-item active">
+								<a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
+							</li>
+							<?php 
+								}else {
+								?>	<li class="page-item ">
+								<a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
+							</li>
+							<?php }
+
+						 }  }  ?>
+						</ul>
+					</nav>
 				</div>
 				<!-- MAIN AREA END -->
 				<!-- SIDE AREA START -->
@@ -131,9 +163,8 @@ require_once ("includes/Sessions.php");
 				<!-- SIDE AREA END -->
 				
 			</div>
-		</div
+		</div>
 		<!-- HEADER END -->
-		
 		<!-- FOOTER -->
 		<footer class="bg-dark text-white">
 			<div class="container">
