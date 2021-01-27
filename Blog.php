@@ -127,7 +127,17 @@ require_once ("includes/Sessions.php");
 					<br>
 					 <!-- Pagination  -->
 					<nav>
-						<ul class="pagination  pagination -lg">
+						<ul class="pagination  pagination-lg">
+								<!-- CREATING BACKWORD BUTTON START -->
+								<?php 
+									if (isset($Page)) {
+									if ($Page>1) {
+								?>
+								<li class="page-item ">
+									<a href="Blog.php?page=<?php echo $Page-1; ?>" class="page-link">&laquo;</a>
+								</li>	
+								<?php } } ?>	
+							 <!-- CREATING BACKWORD BUTTON END -->
 							<?php 
 							global $ConnectingDB;
 							$sql = "SELECT COUNT(*) FROM post";
