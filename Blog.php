@@ -148,11 +148,22 @@ require_once ("includes/Sessions.php");
 							<?php 
 								}else {
 								?>	<li class="page-item ">
-								<a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
-							</li>
+											<a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
+										</li>
 							<?php }
 
-						 }  }  ?>
+						 	}  }  ?>
+
+							 <!-- CREATING FORWARD BUTTON START -->
+								<?php 
+									if (isset($Page)) {
+									if ($Page+1<=$PostPagination) {
+								?>
+								<li class="page-item ">
+									<a href="Blog.php?page=<?php echo $Page+1; ?>" class="page-link">&raquo;</a>
+								</li>	
+								<?php } } ?>	
+							 <!-- CREATING FORWARD BUTTON END -->
 						</ul>
 					</nav>
 				</div>
