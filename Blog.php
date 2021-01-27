@@ -166,7 +166,7 @@ require_once ("includes/Sessions.php");
 
 							 <!-- CREATING FORWARD BUTTON START -->
 								<?php 
-									if (isset($Page)) {
+									if (isset($Page)	&&!empty($Page)) {
 									if ($Page+1<=$PostPagination) {
 								?>
 								<li class="page-item ">
