@@ -26,8 +26,8 @@ if(isset($_POST["Submit"])) {
 	$Image = $_FILES["Image"]["name"];
 	$Target = "Images/".basename($_FILES["Image"]["name"]);
 	
-	if(strlen($AdminHeadline)>12) {
-		$_SESSION["ErrorMsg"] = "Headline should be less than 12 characters";
+	if(strlen($AdminHeadline)>30) {
+		$_SESSION["ErrorMsg"] = "Headline should be less than 30 characters";
 		Redirect_to("MyProfile.php");
 	}
 	elseif(strlen($AdminBio)>500) {
@@ -115,7 +115,7 @@ if(isset($_POST["Submit"])) {
 		<header class="bg-dark text-white  py-3" >
 			<div class="container">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-30">
 						<h1> <i class="fas fa-user mr-2 text-success" style="color: #27aae1;"></i>@<?php 	echo $ExistingUsername; ?></h1>
 						<small>	<?php  echo $ExistingHeadline;?></small>	
 					</div>
@@ -132,7 +132,7 @@ if(isset($_POST["Submit"])) {
 							<h3><?php echo  $ExistingName; ?></h3>
 						</div>
 						<div class="card-body">
-							<img src="images/<?php echo $ExistingImage; ?>" class="block img-fluid mb-3" alt="">
+							<img src="images/<?php echo $ExistingImage; ?>" class="block img-fluid mb-3" alt="">	
 							<div class="">
 							<?php echo $ExistingBio; ?>
 							</div>
@@ -157,7 +157,7 @@ if(isset($_POST["Submit"])) {
 								<div class="form-group">
 									<input class="form-control" type="text" name="Headline" id="title"value="" placeholder="Headline" >
 									<small class="text-muted">Add a professional headline like, 'Engineer' at XYZ or 'Architect' </small>
-									<span class="text-danger">Not more than 12 characters</span>
+									<span class="text-danger">Not more than 30 characters</span>
 								</div>
 
 								<div class="form-group">
