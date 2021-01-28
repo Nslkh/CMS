@@ -34,6 +34,7 @@ require_once ("includes/Sessions.php");
 						<li class="nav-item">
 							<a href="#" class="nav-link">About Us</a>
 						</li>
+						
 						<li class="nav-item">
 							<a href="Blog.php" class="nav-link">Blog</a>
 						</li>
@@ -87,6 +88,12 @@ require_once ("includes/Sessions.php");
 						}
 						$sql = "SELECT * FROM post ORDER BY id desc LIMIT $ShowPostFrom, 5";
 						$stmt= $ConnectingDB->query($sql);
+					}
+					// QUERY WHEN CATEGORY IS ACTIVE IN URL
+					elseif (isset($_GET["category"])) {
+						$Category = $_GET["category"];
+						$sql = "SELECT * FROM post WHERE category='$Category' ORDER BY id desc";
+						$stmt = $ConnectingDB->query($sql); 
 					}
 					// THE DEFAULT SQL QUERY
 					else {
@@ -179,7 +186,49 @@ require_once ("includes/Sessions.php");
 				</div>
 				<!-- MAIN AREA END -->
 				<!-- SIDE AREA START -->
-				<div class="col-sm-4" style="min-height: 40px;background: green;">
+				<div class="col-sm-4">
+				<div class="card mt-4">
+					<div class="card-body">
+						<img src="images/startblog.png" class="d-block img-fluid mb-3" alt="">
+						<div class="text-center">
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, error, ut saepe fugit quos assumenda ex magnam! Quaerat praesentium voluptate dolor, ex labore odit veritatis, officiis commodi cum necessitatibus vitae.
+						</div>
+						<br>
+						<div class="card">
+            <div class="card-header bg-dark text-light">
+              <h2 class="lead">Sign Up !</h2>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-success btn-block text-center text-white mb-4" name="button">Join the Forum</button>
+              <button type="button" class="btn btn-danger btn-block text-center text-white mb-4" name="button">Login</button>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" name="" placeholder="Enter your email"value="">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary btn-sm text-center text-white" name="button">Subscribe Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+					</div>
+				</div>
+				<br>
+				<div class="card">
+					<div class="card-header bg-primary text-light">
+						<h2 class="lead">Categories</h2>
+					</div>
+						<div class="card-body">
+							<?php
+							global $ConnectingDB;
+							$sql = "SELECT * FROM category ORDER BY id desc";
+							$stmt = $ConnectingDB->query($sql);
+							while($DataRows = $stmt->fetch()) {
+								$CategoryId = $DataRows["id"];
+								$CategoryName = $DataRows["title"];
+							?>
+							<a href="Blog.php?category=<?php echo $CategoryName; ?>"><span class="heading"><?php echo $CategoryName; ?></span></a><br>
+						<?php } ?>
+						</div>
+					</div>
 				</div>
 				<!-- SIDE AREA END -->
 				
