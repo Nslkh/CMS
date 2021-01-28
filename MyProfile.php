@@ -16,48 +16,42 @@ while($DataRows = $stmt->fetch()) {
 // FETCHING EXISTING ADMIN DATA END
 
 if(isset($_POST["Submit"])) {
-	$PostTitle = $_POST["PostTitle"];
-	$Category = $_POST['Category'];
+	$AdminName = $_POST["Name"];
+	$AdminHeadline = $_POST['Headline'];
+	$AdminBio = $_POST['Bio'];
 	$Image = $_FILES["Image"]["name"];
-	$Target = "Uploads/".basename($_FILES["Image"]["name"]);
-	$PostText = $_POST['PostDescription'];
-	$Admin = $_SESSION["UserName"] ;	
-	date_default_timezone_set("Asia/Tashkent");
-	$CurrentTime = time();
+	$Target = "Images/".basename($_FILES["Image"]["name"]);
 	
-	$DateTime = strftime("%B-%d-%Y %H:%M:%S", $CurrentTime);
-	if(empty($PostTitle)) {
-		$_SESSION["ErrorMsg"] = "Title cant be empty";
-		Redirect_to("AddNewPost.php");
-	}elseif(strlen($PostTitle)<5) {
-		$_SESSION["ErrorMsg"] = "Post title should be greater than 5 characters";
-		Redirect_to("AddNewPost.php");
+	if(strlen($AdminHeadline)>12) {
+		$_SESSION["ErrorMsg"] = "Headline should be less than 12 characters";
+		Redirect_to("MyProfile.php");
 	}
-	elseif(strlen($PostText)>9999) {
-		$_SESSION["ErrorMsg"] = "Post Description  title should be less than 10000 characters";
-			Redirect_to("AddNewPost.php");
+	elseif(strlen($AdminBio)>500) {
+		$_SESSION["ErrorMsg"] = "Bio should be less than 500 characters";
+			Redirect_to("MyProfile.php");
 	}else{
-		//Query to insert Post in DB when all is fine
+	//Query to Update Admin in DB when all is fine
 		global $ConnectingDB;
-		$sql = "INSERT INTO post(datetime,title,category,author,image,post)";
-		$sql .="VALUES(:dateTime,:PostTitle,:categoryName,:adminName,:imageName,:PostDescription)";
-		$stmt = $ConnectingDB->prepare($sql);
-		$stmt->bindValue(':dateTime',$DateTime);
-		$stmt->bindValue(':PostTitle',$PostTitle);
-		$stmt->bindValue(':categoryName',$Category);
-		$stmt->bindValue(':adminName',$Admin);
-		$stmt->bindValue(':imageName',$Image);
-		$stmt->bindValue(':PostDescription',$PostText);
-		$Execute=$stmt->execute();
+		if(!empty($_FILES["Image"]["name"])){
+			$sql = "UPDATE admins 
+				SET aname='$AdminName', aheadline='$AdminHeadline', abio='$AdminBio', aimage='$Image'
+				WHERE id='$AdminId'";
+			} else {
+			$sql = "UPDATE admins 
+				SET aname='$AdminName', aheadline='$AdminHeadline', abio='$AdminBio'
+				WHERE id='$AdminId'";
+			}
+		$Execute = $ConnectingDB->query($sql);	
 		move_uploaded_file($_FILES["Image"]["tmp_name"], $Target);
 		if($Execute){
-			$_SESSION["SuccessMsg"] = "Post  with id : ".$ConnectingDB->lastInsertId()."  Added Successfully";
-			Redirect_to("AddNewPost.php");
+			$_SESSION["SuccessMsg"] = "Details Updated Successfully";
+			Redirect_to("MyProfile.php");
 		}else{
 			$_SESSION['ErrorMsg'] = "Something went wrong. Try again !";
-			Redirect_to("AddNewPost.php");
+			Redirect_to("MyProfile.php");
 		}
 	}
+
 } //Ending of submit Button If-Condition
 ?>
 <!DOCTYPE html>
