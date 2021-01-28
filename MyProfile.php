@@ -12,6 +12,10 @@ $sql = "SELECT * FROM admins WHERE id='$AdminId'";
 $stmt = $ConnectingDB->query($sql);
 while($DataRows = $stmt->fetch()) {
 	$ExistingName = $DataRows['aname'];
+	$ExistingUsername = $DataRows['username'];
+	$ExistingHeadline = $DataRows['aheadline'];
+	$ExistingBio = $DataRows['abio'];
+	$ExistingImage = $DataRows['aimage'];
 }
 // FETCHING EXISTING ADMIN DATA END
 
@@ -112,7 +116,8 @@ if(isset($_POST["Submit"])) {
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h1> <i class="fas fa-user mr-2" style="color: #27aae1;"></i>My Profile</h1>
+						<h1> <i class="fas fa-user mr-2 text-success" style="color: #27aae1;"></i>@<?php 	echo $ExistingUsername; ?></h1>
+						<small>	<?php  echo $ExistingHeadline;?></small>	
 					</div>
 				</div>
 			</div>
@@ -127,9 +132,9 @@ if(isset($_POST["Submit"])) {
 							<h3><?php echo  $ExistingName; ?></h3>
 						</div>
 						<div class="card-body">
-							<img src="images/avatar.png" class="block img-fluid mb-3" alt="">
+							<img src="images/<?php echo $ExistingImage; ?>" class="block img-fluid mb-3" alt="">
 							<div class="">
-								Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis enim atque omnis corrupti praesentium nihil eveniet expedita, dolor placeat eius eaque, veniam culpa eligendi velit ab iusto obcaecati, laudantium hic.
+							<?php echo $ExistingBio; ?>
 							</div>
 						</div>
 					</div>
