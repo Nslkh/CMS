@@ -48,7 +48,7 @@ if(isset($_POST["Submit"])) {
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie-edge">
-		<title>Blog Page</title>
+		<title>Full Post Page</title>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -226,7 +226,76 @@ if(isset($_POST["Submit"])) {
 				<!-- MAIN AREA END -->
 
 				<!-- SIDE AREA START -->
-				<div class="col-sm-4" style="min-height: 40px;background: green;">
+				<div class="col-sm-4">
+				<div class="card mt-4">
+					<div class="card-body">
+						<img src="images/startblog.png" class="d-block img-fluid mb-3" alt="">
+						<div class="text-center">
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, error, ut saepe fugit quos assumenda ex magnam! Quaerat praesentium voluptate dolor, ex labore odit veritatis, officiis commodi cum necessitatibus vitae.
+						</div>
+						<br>
+						<div class="card">
+            <div class="card-header bg-dark text-light">
+              <h2 class="lead">Sign Up !</h2>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-success btn-block text-center text-white mb-4" name="button">Join the Forum</button>
+              <button type="button" class="btn btn-danger btn-block text-center text-white mb-4" name="button">Login</button>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" name="" placeholder="Enter your email"value="">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary btn-sm text-center text-white" name="button">Subscribe Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+					</div>
+				</div>
+				<br>
+				<div class="card">
+					<div class="card-header bg-primary text-light">
+						<h2 class="lead">Categories</h2>
+					</div>
+						<div class="card-body">
+							<?php
+							global $ConnectingDB;
+							$sql = "SELECT * FROM category ORDER BY id desc";
+							$stmt = $ConnectingDB->query($sql);
+							while($DataRows = $stmt->fetch()) {
+								$CategoryId = $DataRows["id"];
+								$CategoryName = $DataRows["title"];
+							?>
+							<a href="Blog.php?category=<?php echo $CategoryName; ?>"><span class="heading"><?php echo $CategoryName; ?></span></a><br>
+						<?php } ?>
+						</div>
+					</div>
+					<br>
+					<div class="card">
+						<div class="card-header bg-info text-white">
+							<h2 class="lead">Recent Posts</h2>
+						</div>
+						<div class="card-body">
+							<?php 
+              global $ConnectingDB;
+              $sql = "SELECT *FROM post ORDER BY id desc LIMIT 0,5";
+              $stmt = $ConnectingDB->query($sql);
+              while ($DataRows=$stmt->fetch()) {
+              	$Id = $DataRows['id']; 
+              	$Title = $DataRows['title']; 
+              	$DateTime = $DataRows['datetime']; 
+              	$Image = $DataRows['image']; 
+							?>
+							<div class="media">
+								<img src="Uploads/<?php echo htmlentities($Image); ?>" class="d-block img-fluid align-self-start" width="100" height="104" alt="">
+								<div class="media-body ml-2">
+									<a href="FullPost.php?id=<?php echo htmlentities($Id); ?>" target="_blank"> <h6 class="lead"><?php echo htmlentities($Title);  ?></h6></a>
+									<p class="small"><?php echo htmlentities($DateTime); ?></p>
+								</div>
+							</div>
+							<hr>
+						<?php } ?>
+						</div>
+					</div>
 				</div>
 				<!-- SIDE AREA END -->
 				
