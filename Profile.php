@@ -1,3 +1,26 @@
+<?php
+require_once ("includes/DB.php");
+require_once ("includes/Functions.php");
+require_once ("includes/Sessions.php");
+$SearchQueryParameters = $_GET["username"];
+global $ConnectingDB;
+$sql = "SELECT aname,aheadline,abio,aimage FROM admins WHERE username=:userName";
+$stmt = $ConnectingDB->prepare($sql);
+$stmt->bindValue(':userName', $SearchQueryParameters);
+$stmt->execute();
+$Result = $stmt->rowcount();
+if($Result ==1){
+	while($DataRows=$stmt->fetch()) {
+		$ExistingName = $DataRows["aname"];
+		$ExistingBio = $DataRows["abio"];
+		$ExistingImage = $DataRows["aimage"];
+		$ExistingHeadline = $DataRows["aheadline"];
+	}
+}else{
+	$_SESSION["ErrorMsg"]="Bad Request !";
+	Redirect_to("Blog.php?page=1");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -57,8 +80,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-						<h1><i class="fas fa-user text-success mr-2" style="color: #27aae1"></i>Name</h1>
-					<h3>Headline</h3>
+						<h1><i class="fas fa-user text-success mr-2" style="color: #27aae1"></i><?php echo $ExistingName; ?></h1>
+					<h3><?php echo $ExistingHeadline; ?></h3>
 					</div>
 				</div>
 			</div>
@@ -67,12 +90,12 @@
 		<section class="container py-2 mb-4">
 			<div class="row">
 				<div class="col-md-3">
-					<img src="images/avatar.png" class="d-block img-fluid mb-3 rounded-circle" alt="">
+					<img src="images/<?php echo $ExistingImage ?>" class="d-block img-fluid mb-3 rounded-circle" alt="">
 				</div>
 				<div class="col-md-9" style="min-height: 400px;">
 					<div class="card">
 						<div class="card-body">
-						<p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo assumenda laboriosam provident consequuntur tempore ut dicta deleniti dolor maiores quo sint, voluptatum odit incidunt nesciunt at quibusdam. Nostrum ex, illo. Odio iure repellat nam fugit rerum nulla deserunt voluptates! Dignissimos nihil maxime odio debitis. Tempore libero sint voluptate autem doloribus animi cum a quibusdam delectus, voluptates eum ut at repellendus nobis dignissimos sed odio dolorum.</p>
+						<p class="lead"><?php echo $ExistingBio; ?></p>
 						</div>
 					</div>
 				</div>
